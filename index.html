@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WhatsApp link generator</title>
+<style>body{font:1.05rem/1.6 system-ui;max-width:36rem;margin:8vh auto;padding:1rem}label,input,textarea,button{display:block}input,textarea{box-sizing:border-box;width:100%;padding:.7rem;font:inherit}button{padding:.55rem 1rem;margin:1rem 0}output{overflow-wrap:anywhere}</style>
+<main><h1>WhatsApp link generator</h1><p>Use the international number, including the country code. Spaces, brackets and hyphens are welcome.</p>
+<form><label for="phone">WhatsApp number</label><input id="phone" type="tel" required placeholder="+91 …"><label for="msg">Optional opening message</label><textarea id="msg"></textarea><button>Generate link</button></form><output aria-live="polite"></output>
+<p><a href="https://loudfunnels.com/free-tools/whatsapp-link-generator?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=backlinks">Open the LoudFunnels link and QR tool</a></p></main>
+<script>
+const form = document.querySelector('form');
+const output = document.querySelector('output');
+form.addEventListener('input', () => output.replaceChildren());
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  const number = document.querySelector('#phone').value.trim().replace(/[\s()-]/g, '').replace(/^\+/, '');
+  if (!/^[1-9]\d{6,14}$/.test(number)) {
+    output.textContent = 'Check the country code and enter 7 to 15 digits in total.';
+    return;
+  }
+  const url = new URL('https://wa.me/' + number);
+  const message = document.querySelector('#msg').value.trim();
+  if (message) url.searchParams.set('text', message);
+  const link = document.createElement('a');
+  link.href = url.href;
+  link.textContent = url.href;
+  output.replaceChildren(link);
+});
+</script></html>
